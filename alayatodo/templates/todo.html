@@ -1,14 +1,24 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="col-md-4 col-md-offset-4">
+<div class="col-md-8 col-md-offset-2">
     <h1>Todo:</h1>
-    <table class="table table-striped">
-        <th>#</th><th>User</th><th>Description</th><th></th>
+    <table class="table table-striped table-bordered table-hover">
+        <th>#</th><th>User</th><th>Description</th><th>Status</th></Status><th>Change Status</th><th>Delete</th>
         <tr>
             <td>{{ todo.id }}</td>
             <td>{{ todo.user_id }}</td>
             <td>{{ todo.description }}</td>
+            {% if todo.complete == 0 %}
+                <td><span class="label label-default">In progress</span></td>
+            {% else %}
+                <td><span class="label label-success">Completed</span></td>
+            {% endif %}
+            <td>
+                <form method="post" action="{{ url_for('toggle_status', id=todo.id) }}">
+                    <button type="submit" class="btn btn-xs btn-primary">Click to change Status</button>
+                </form>
+            </td>
             <td>
                 <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
                     <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>

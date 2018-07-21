@@ -93,3 +93,14 @@ def todo_delete(id):
         g.db.session.delete(item)
         g.db.session.commit()
     return redirect('/todo')
+
+@app.route('/todo/<id>/toggle_status', methods=['POST'])
+def toggle_status(id):
+    if not session.get('logged_in'):
+        return redirect('/login')
+    item = Todo.query.filter_by(user_id=session['user']['id'],
+                                 id=id).one_or_none()
+    if item:
+        item.complete = (item.complete + 1) % 2
+        g.db.session.commit()
+    return redirect('/todo')
