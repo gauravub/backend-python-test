@@ -21,11 +21,11 @@ def login():
 
 
 @app.route('/login', methods=['POST'])
-def login_POST():
+def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    sql = "SELECT * FROM users WHERE username = '%s' AND password = '%s'";
+    sql = "SELECT * FROM users WHERE username = '%s' AND password = '%s'"
     cur = g.db.execute(sql % (username, password))
     user = cur.fetchone()
     if user:
@@ -52,7 +52,7 @@ def todo(id):
 
 @app.route('/todo', methods=['GET'])
 @app.route('/todo/', methods=['GET'])
-def todos():
+def todos_get():
     if not session.get('logged_in'):
         return redirect('/login')
     cur = g.db.execute("SELECT * FROM todos")
@@ -62,7 +62,7 @@ def todos():
 
 @app.route('/todo', methods=['POST'])
 @app.route('/todo/', methods=['POST'])
-def todos_POST():
+def todos_post():
     if not session.get('logged_in'):
         return redirect('/login')
     g.db.execute(
