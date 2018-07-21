@@ -42,9 +42,6 @@ You will be asked to improve the code of this app with the following tasks.
 
 You can complete the tasks in any order.
 
-The test should take about an hour.
-Not all the tasks can be completed in that time.
-
 Separate your commits by task and use the following format for your commit messages: TASK-{task number}: {meaningful message}
 
 ### Tasks
