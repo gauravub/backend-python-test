@@ -6,6 +6,7 @@ from flask import (
     request,
     session
     )
+from alayatodo.models import User, Todo
 
 
 @app.route('/')
@@ -24,12 +25,15 @@ def login():
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
+    user = (
+        g.db.session.query(User)
+        .filter(User.username == username,
+                User.password==password)
+            .first()
+    )
 
-    sql = "SELECT * FROM users WHERE username = '%s' AND password = '%s'"
-    cur = g.db.execute(sql % (username, password))
-    user = cur.fetchone()
     if user:
-        session['user'] = dict(user)
+        session['user'] = user.get_dict()
         session['logged_in'] = True
         return redirect('/todo')
 
@@ -45,31 +49,37 @@ def logout():
 
 @app.route('/todo/<id>', methods=['GET'])
 def todo(id):
-    cur = g.db.execute("SELECT * FROM todos WHERE id ='%s'" % id)
-    todo = cur.fetchone()
-    return render_template('todo.html', todo=todo)
+    todo_item = (
+        g.db.session.query(Todo)
+            .filter(Todo.user_id == session['user']['id'],
+                    Todo.id == id).one_or_none()
+    )
+    return render_template('todo.html', todo=todo_item)
 
 
-@app.route('/todo', methods=['GET'])
+#additional rule removed, since 'strict_slashes' is enabled by default, all
+# urls that match without trailing slash will trigger a redirect to the same
+# URL with the missing slash appended
 @app.route('/todo/', methods=['GET'])
 def todos_get():
     if not session.get('logged_in'):
         return redirect('/login')
-    cur = g.db.execute("SELECT * FROM todos")
-    todos = cur.fetchall()
+    todos = (
+        g.db.session.query(Todo)
+            .filter(Todo.user_id == session['user']['id']).all()
+    )
     return render_template('todos.html', todos=todos)
 
 
-@app.route('/todo', methods=['POST'])
 @app.route('/todo/', methods=['POST'])
 def todos_post():
     if not session.get('logged_in'):
         return redirect('/login')
-    g.db.execute(
-        "INSERT INTO todos (user_id, description) VALUES ('%s', '%s')"
-        % (session['user']['id'], request.form.get('description', ''))
-    )
-    g.db.commit()
+    user_id = session['user']['id']
+    description = request.form.get('description', '')
+    new_todo = Todo(user_id=user_id, description=description, complete=0)
+    g.db.session.add(new_todo)
+    g.db.session.commit()
     return redirect('/todo')
 
 
@@ -77,6 +87,9 @@ def todos_post():
 def todo_delete(id):
     if not session.get('logged_in'):
         return redirect('/login')
-    g.db.execute("DELETE FROM todos WHERE id ='%s'" % id)
-    g.db.commit()
+    item = Todo.query.filter_by(user_id=session['user']['id'],
+                                 id=id).one_or_none()
+    if item:
+        g.db.session.delete(item)
+        g.db.session.commit()
     return redirect('/todo')
