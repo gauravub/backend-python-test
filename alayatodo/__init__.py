@@ -1,8 +1,11 @@
 from flask import Flask, g
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 
 # configuration
 DATABASE = '/tmp/alayatodo.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(DATABASE)
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -11,24 +14,19 @@ PASSWORD = 'default'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-
-
-def connect_db():
-    conn = sqlite3.connect(app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
+db = SQLAlchemy(app)
 
 
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    g.db = db
 
 
 @app.teardown_request
 def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
+    setattr(g, 'db', None)
+
 
 
 import alayatodo.views
+import alayatodo.models
