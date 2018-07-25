@@ -4,7 +4,7 @@ from flask import (
     redirect,
     render_template,
     request,
-    session
+    session,
     )
 from alayatodo.models import User, Todo
 
