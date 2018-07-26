@@ -64,11 +64,13 @@ def todo(id):
 def todos_get():
     if not session.get('logged_in'):
         return redirect('/login')
-    todos = (
+    page = int(request.args.get('page', 1))
+    todo_results = (
         g.db.session.query(Todo)
-            .filter(Todo.user_id == session['user']['id']).all()
+            .filter(Todo.user_id == session['user']['id'])
+            .paginate(per_page=3, page=page, error_out=True)
     )
-    return render_template('todos.html', todos=todos)
+    return render_template('todos.html', pagination=todo_results, todos=todo_results)
 
 
 @app.route('/todo/', methods=['POST'])

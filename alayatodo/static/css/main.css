@@ -20,3 +20,27 @@ body {
     background-color: #ff4d4d;
  }
 
+.paginate {
+ display: inline-block;
+}
+
+.pagination {
+ text-align: center;
+ }
+
+.paginate a {
+ text-decoration: none;
+ color: bronze;
+ float: left;
+ padding: 10px 10px;
+}
+
+.paginate a.active {
+ background-color: lightblue;
+ color: lightblue;
+ border-radius: 10px;
+}
+
+.paginate a:hover:not(.active) {
+ background-color: lightgray;
+}

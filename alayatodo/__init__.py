@@ -1,5 +1,4 @@
 from flask import Flask, g
-import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 
 # configuration
