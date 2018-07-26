@@ -5,6 +5,7 @@ from flask import (
     render_template,
     request,
     session,
+    jsonify
     )
 from alayatodo.models import User, Todo
 
@@ -55,6 +56,15 @@ def todo(id):
                     Todo.id == id).one_or_none()
     )
     return render_template('todo.html', todo=todo_item)
+
+@app.route('/todo/<id>/json', methods=['GET'])
+def get_json(id):
+    todo_item = (
+        g.db.session.query(Todo)
+            .filter(Todo.user_id == session['user']['id'],
+                    Todo.id == id).one_or_none()
+    )
+    return jsonify(todo_item.get_dict())
 
 
 #additional rule removed, since 'strict_slashes' is enabled by default, all
