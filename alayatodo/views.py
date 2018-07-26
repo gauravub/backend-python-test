@@ -88,14 +88,14 @@ def todos_post():
     if not session.get('logged_in'):
         return redirect('/login')
     user_id = session['user']['id']
-    description = request.form.get('description', '')
+    description = request.form.get('description')
     new_todo = Todo(user_id=user_id, description=description, complete=0)
     g.db.session.add(new_todo)
     g.db.session.commit()
     return redirect('/todo')
 
 
-@app.route('/todo/<id>', methods=['POST'])
+@app.route('/todo/<int:id>', methods=['POST'])
 def todo_delete(id):
     if not session.get('logged_in'):
         return redirect('/login')
