@@ -32,7 +32,7 @@
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                          <div class="modal-header">
+                          <div class="modal-header modal-header-warning">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                           </div>
@@ -41,7 +41,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                            <button type="submit" class="btn btn-primary">Yes</button>
+                            <button type="submit" class="btn btn-danger">Yes</button>
                           </div>
                         </div>
                       </div>
@@ -52,27 +52,44 @@
         {% endfor %}
         </table>
         <div>
-            <form method="post" action="{{ url_for('todos_post') }}">
-                <input type="textbox" name="description" class="small-6 small-center" placeholder="Description...">
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#AddModal">Add</button>
-                    <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="AddModalLabel">Confirmation</h4>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to add this item?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                            <button type="submit" class="btn btn-primary">Yes</button>
-                          </div>
-                        </div>
+            <form name="form1" method="post" action="{{ url_for('todos_post') }}" >
+                <input type="textbox" id ="des_id" name="description" class="small-6 small-center" placeholder="Description...">
+                <button type="button" name="addButton" class="btn btn-sm btn-primary"  data-target="#AddModal" onclick="onSubmit()">Add</button>
+                <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header modal-header-success">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="AddModalLabel">Confirmation</h4>
+                      </div>
+                      <div class="modal-body">
+                          <p>Are you sure you want to add this item?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="NoDescModal" tabindex="-1" role="dialog" aria-labelledby="NoDescModalLabel">
+                  <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                      <div class="modal-header modal-header-warning" >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="AddModalLabel">Error</h4>
+                      </div>
+                      <div class="modal-body">
+                          <p>Todo cannot be empty.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </form>
+
         </div>
 
 </div>

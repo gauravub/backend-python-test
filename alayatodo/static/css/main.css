@@ -5,3 +5,18 @@ body {
 .login-form > div {
     margin-top: 10px;
 }
+
+.modal-dialog {
+    width: 30%;
+    padding: 9px 15px;
+}
+
+.modal-header-success {
+    background-color: #0480be;
+ }
+
+
+ .modal-header-warning {
+    background-color: #ff4d4d;
+ }
+
