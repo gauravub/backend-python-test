@@ -13,12 +13,12 @@ body {
 
 .modal-header-success {
     background-color: #0480be;
- }
+}
 
 
- .modal-header-warning {
+.modal-header-warning {
     background-color: #ff4d4d;
- }
+}
 
 .paginate {
  display: inline-block;
@@ -26,7 +26,7 @@ body {
 
 .pagination {
  text-align: center;
- }
+}
 
 .paginate a {
  text-decoration: none;
